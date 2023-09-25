@@ -1,5 +1,15 @@
+"""
+A module that is an implementation of the Kohonen layer
+of a Kohonen-Grossberg counter-propagation network,
+responsible for training it
+and clustering the data points received from the main module.
+"""
 from vector import *
 
+"""
+A function to train a Kohonen network with given Kohonen units
+by inputting given data points into the network.
+"""
 def train(dataPoints, units):
     for dataPoint in dataPoints:
         dataPoint.normalise()
@@ -48,6 +58,10 @@ def train(dataPoints, units):
     for sigma_epoch in sigmas_epoch:
         print(sigma_epoch)
 
+"""
+A function to get the nearest of given Kohonen units
+to a given data point.
+"""
 def get_nearest_unit(dataPoint, units):
     nets = []
 
@@ -67,6 +81,9 @@ def get_nearest_unit(dataPoint, units):
 
     return None
 
+"""
+A function to cluster given data points using given Kohonen units.
+"""
 def cluster(dataPoints, units):
     print("Data point clusters:")
     dataPointClusters = {}
