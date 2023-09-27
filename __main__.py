@@ -33,7 +33,7 @@ def main():
     cluster(dataPointsNotToNormalise, units)
 
 """
-A function to get a training/test set file's path given the set's name.
+A function to get a training/test set file's path for a set's given name.
 """
 def get_set_file_path(setToUse):
     directory = "Sets"
@@ -95,7 +95,7 @@ def get_units(dataPoint):
 
 """
 A function to generate a Kohonen unit
-with dimensionality of a given data point. 
+with the dimensionality of a given data point. 
 """
 def get_unit(dataPoint):
     start = 0
