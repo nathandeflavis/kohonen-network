@@ -19,44 +19,64 @@ def train(dataPoints, units):
 
     done = False
     epoch = 1
-    sigmas_epoch = []
+    sigmasEpoch = []
 
     while not done:
-        print("Epoch " + str(epoch))
-        print("Iteration weight changes:")
-        sigma_epoch = 0
+        output = "Epoch " + str(epoch)
+        print(output)
+        
+        output = "Iteration weight changes:"
+        print(output)
+        
+        sigmaEpoch = 0
+        start = 0
+        dataPointCount = len(dataPoints)
         
         #choose training example (sequentially)
-        for i in range(0, len(dataPoints)):
-            unit = get_nearest_unit(dataPoints[i], units)
+        for i in range(start, dataPointCount):
+            dataPoint = dataPoints[i]
+            unit = get_nearest_unit(dataPoint, units)
+            
             #deep copy
-            delta = Vector(unit.get_coordinates()[:])
-            delta.multiply_by(-1)
+            unitCoordinates = unit.get_coordinates()[:]
+            
+            delta = Vector(unitCoordinates)
+            multiplier = -1
+            delta.multiply_by(multiplier)
             delta.add(dataPoint)
-            #learning rate
-            delta.multiply_by(0.1)
-            sigma_iteration = 0
+            
+            learningRate = 0.1
+            delta.multiply_by(learningRate)
+            
+            sigmaIteration = 0
+            deltaCoordinates = delta.get_coordinates()
 
-            for coordinate in delta.get_coordinates():
-                sigma_iteration += abs(coordinate)
+            for coordinate in deltaCoordinates:
+                sigmaIteration += abs(coordinate)
 
-            print(sigma_iteration)
-            sigma_epoch += sigma_iteration
+            output = str(sigmaIteration)
+            print(output)
+            
+            sigmaEpoch += sigmaIteration
             unit.add(delta)
             unit.normalise()
+            
+            minWeightChange = .01
+            sigmaIterationIsTooSmall = sigmaIteration < minWeightChange
 
-            #minimum weight change
-            if sigma_iteration < .01:
+            if sigmaIterationIsTooSmall:
                 done = True
                 break
 
-        sigmas_epoch.append(sigma_epoch)
+        sigmasEpoch.append(sigmaEpoch)
         epoch += 1
 
-    print("Epoch weight changes:")
+    output = "Epoch weight changes:"
+    print(output)
 
-    for sigma_epoch in sigmas_epoch:
-        print(sigma_epoch)
+    for sigmaEpoch in sigmasEpoch:
+        output = str(sigmaEpoch)
+        print(output)
 
 """
 A function to get the nearest of given Kohonen units
@@ -67,17 +87,32 @@ def get_nearest_unit(dataPoint, units):
 
     for unit in units:
         net = 0
+        start = 0
+        unitDimensionality = len(unit.get_coordinates())
         
-        for i in range(0, len(unit.get_coordinates())):
-            net += (dataPoint.get_coordinates()[i] * unit.get_coordinates()[i])
+        for i in range(start, unitDimensionality):
+            dataPointCoordinates = dataPoint.get_coordinates()
+            dataPointCoordinate = dataPointCoordinates[i]
+
+            unitCoordinates = unit.get_coordinates()
+            unitCoordinate = unitCoordinates[i]
+            
+            product = dataPointCoordinate * unitCoordinate
+            net += product
 
         nets.append(net)
         
     maxNet = max(nets)
+    start = 0
+    unitCount = len(units)
 
-    for i in range(0, len(units)):
-        if nets[i] == maxNet:
-            return units[i]
+    for i in range(start, unitCount):
+        net = nets[i]
+        netIsMaxNet = net == maxNet
+        
+        if netIsMaxNet:
+            unit = units[i]
+            return unit
 
     return None
 
@@ -90,15 +125,23 @@ def cluster(dataPoints, units):
 
     for dataPoint in dataPoints:
         unit = get_nearest_unit(dataPoint, units)
+        unitIsInDataPointClusters = unit in dataPointClusters
 
-        if unit in dataPointClusters:
+        if unitIsInDataPointClusters:
             dataPointClusters[unit].append(str(dataPoint))
         else:
             dataPointClusters[unit] = [str(dataPoint)]
 
-    for key in dataPointClusters.keys():
-        print("Cluster " + str(key) + ":")
-        print("Data points:")
+    keys = dataPointClusters.keys()
 
-        for dataPoint in dataPointClusters[key]:
-            print(str(dataPoint))
+    for key in keys:
+        output = "Cluster " + str(key) + ":"
+        print(output)
+
+        output = "Data points:"
+        print(output)
+        dataPointCluster = dataPointClusters[key]
+
+        for dataPoint in dataPointCluster:
+            output = str(dataPoint)
+            print(output)
