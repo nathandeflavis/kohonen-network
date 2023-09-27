@@ -11,8 +11,13 @@ from csv import *
 A function that is the entry point into the program.
 """
 def main():
-    setToUse = input("Use <Training> or <Test> set? ")
-    dataPointsToNormalise = get_data_points("Sets/" + setToUse + ".csv")
+    prompt = "Use <Training> or <Test> set? "
+    setToUse = input(prompt)
+    directory = "Sets"
+    fileExtension = "csv"
+    dataFilePath = directory + "/" + setToUse + "." + fileExtension
+    dataPointsToNormalise = get_data_points(dataFilePath)
+    
     #deep copy
     dataPointsNotToNormalise = []
 
@@ -21,12 +26,16 @@ def main():
 
         for coordinate in dataPoint.get_coordinates():
             coordinates.append(coordinate)
-        
+
         dataPointsNotToNormalise.append(Vector(coordinates))
 
-    units = get_units(dataPointsToNormalise[0])
+    firstDataPointToNormaliseIndex = 0
+    firstDataPointToNormalise = dataPointsToNormalise[
+        firstDataPointToNormaliseIndex]
+    units = get_units(firstDataPointToNormalise)
+    useTrainingSet = setToUse == "Training"
 
-    if setToUse == "Training":
+    if useTrainingSet:
         train(dataPointsToNormalise, units)
     
     cluster(dataPointsNotToNormalise, units)
@@ -40,11 +49,13 @@ def get_data_points(dataFilePath):
     with open(dataFilePath) as file:
         for line in DictReader(file):
             coordinates = []
+            values = line.values()
             
-            for value in line.values():
+            for value in values:
                 coordinates.append(float(value))
 
-            dataPoints.append(Vector(coordinates))
+            dataPoint = Vector(coordinates)
+            dataPoints.append(dataPoint)
                 
     file.close()
     return dataPoints
@@ -55,15 +66,25 @@ with the dimensionality of a given data point.
 """
 def get_units(dataPoint):
     units = []
+    prompt = "How many units? "
+    start = 0
 
-    for i in range(0, int(input("How many units? "))):
-        print("Unit " + str(i + 1) + ":")
+    for i in range(start, int(input(prompt))):
+        unitNumber = i + 1
+        output = "Unit " + str(unitNumber) + ":"
+        print(output)
+        
         coordinates = []
+        dataPointDimensionality = len(dataPoint._coordinates)
 
-        for j in range(0, len(dataPoint._coordinates)):
-            coordinates.append(float(input("Coordinate " + str(j + 1) + ": ")))
+        for j in range(start, dataPointDimensionality):
+            coordinateNumber = j + 1
+            prompt = "Coordinate " + str(coordinateNumber) + ": "
+            coordinate = float(input(prompt))
+            coordinates.append(coordinate)
 
-        units.append(Vector(coordinates))
+        unit = Vector(coordinates)
+        units.append(unit)
 
     return units
 
