@@ -33,19 +33,19 @@ for given data points and units.
 """
 def get_epoch_weight_change_sums(dataPoints, units):
     globals()['networkIsTrained'] = False
-    #epoch = 1
+    epoch = 1
     epochWeightChangeSums = []
 
     while not globals()['networkIsTrained']:
-        #output = "Epoch " + str(epoch)
-        #print(output)
+        output = "Epoch " + str(epoch)
+        print(output)
         
-        #output = "Iteration weight changes:"
-        #print(output)
+        output = "Iteration weight changes:"
+        print(output)
         
         epochWeightChangeSum = get_epoch_weight_change_sum(dataPoints, units)
         epochWeightChangeSums.append(epochWeightChangeSum)
-        #epoch += 1
+        epoch += 1
 
     return epochWeightChangeSums
 
