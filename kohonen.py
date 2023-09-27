@@ -29,7 +29,7 @@ def normalise_vectors(vectors):
 
 """
 A function to compute weight change sums in epochs
-for given data points and units.
+for given data points and Kohonen units.
 """
 def get_epoch_weight_change_sums(dataPoints, units):
     globals()['networkIsTrained'] = False
@@ -50,8 +50,8 @@ def get_epoch_weight_change_sums(dataPoints, units):
     return epochWeightChangeSums
 
 """
-A function to compute the weight change sum in an epoch
-for given data points and units.
+A function to compute a weight change sum in an epoch
+for given data points and Kohonen units.
 """
 def get_epoch_weight_change_sum(dataPoints, units):
     epochWeightChangeSum = 0
@@ -81,7 +81,7 @@ def get_epoch_weight_change_sum(dataPoints, units):
     return epochWeightChangeSum
 
 """
-A function to compute weight change for a given Kohonen unit and data point.
+A function to compute a weight change for a given Kohonen unit and data point.
 """
 def get_weight_change(unit, dataPoint):
     unitCoordinates = deepcopy(unit.get_coordinates())
@@ -95,7 +95,7 @@ def get_weight_change(unit, dataPoint):
     return weightChange
 
 """
-A function to compute weight change sum for given weight change.
+A function to compute a weight change sum for a given weight change.
 """
 def get_weight_change_sum(weightChange):
     weightChangeCoordinates = weightChange.get_coordinates()
@@ -132,7 +132,7 @@ def cluster(dataPoints, units):
         print_data_point_cluster(dataPointCluster)
 
 """
-A function to get data point clusters for given data points and units.
+A function to get data point clusters for given data points and Kohonen units.
 """
 def get_data_point_clusters(dataPoints, units):
     dataPointClusters = {}
