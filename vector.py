@@ -16,10 +16,17 @@ class Vector:
     A function to represent this vector as a string.
     """
     def __str__(self):
-        s = "(" + str(self._coordinates[0])
+        coordinates = self._coordinates
+        firstCoordinateIndex = 0
+        firstCoordinate = coordinates[firstCoordinateIndex]
+        s = "(" + str(firstCoordinate)
+        
+        start = 1
+        dimensionality = len(coordinates)
 
-        for i in range(1, len(self._coordinates)):
-            s += ", " + str(self._coordinates[i])
+        for i in range(1, dimensionality):
+            coordinate = coordinates[i]
+            s += ", " + str(coordinate)
 
         s += ")"
         return s       
@@ -28,7 +35,8 @@ class Vector:
     A getter function for this vector's coordinates.
     """
     def get_coordinates(self):
-        return self._coordinates
+        coordinates = self._coordinates
+        return coordinates
 
     """
     A function to get this vector's length
@@ -36,11 +44,15 @@ class Vector:
     """
     def get_length(self):
         squareSum = 0.0
+        coordinates = self._coordinates
+        power = 2
 
-        for coordinate in self._coordinates:
-            squareSum = squareSum + coordinate ** 2
+        for coordinate in coordinates:
+            square = coordinate ** power
+            squareSum += square
 
-        return sqrt(squareSum)
+        length = sqrt(squareSum)
+        return length
 
     """
     A function to normalise this vector
@@ -49,9 +61,13 @@ class Vector:
     def normalise(self):
         length = self.get_length()
         coordinates = self._coordinates
+        start = 0
+        dimensionality = len(coordinates)
 
-        for i in range(0, len(coordinates)):
-            coordinates[i] /= length
+        for i in range(start, dimensionality):
+            coordinate = coordinates[i]
+            coordinate /= length
+            coordinates[i] = coordinate
 
     """
     A function to add the coordinates of a given other vector
@@ -60,15 +76,25 @@ class Vector:
     """
     def add(self, vector):
         myCoordinates = self._coordinates
+        theirCoordinates = vector._coordinates
+        start = 0
+        myDimensionality = len(myCoordinates)
         
-        for i in range(0, len(myCoordinates)):
-            myCoordinates[i] += vector._coordinates[i]
+        for i in range(start, myDimensionality):
+            myCoordinate = myCoordinates[i]
+            theirCoordinate = theirCoordinates[i]
+            myCoordinate += theirCoordinate
+            myCoordinates[i] = myCoordinate
 
     """
     A function to multiply this vector's coordinates by a given multiplier.
     """
     def multiply_by(self, multiplier):
         coordinates = self._coordinates
+        start = 0
+        dimensionality = len(coordinates)
         
-        for i in range(0, len(coordinates)):
-            coordinates[i] *= multiplier
+        for i in range(start, dimensionality):
+            coordinate = coordinates[i]
+            coordinate *= multiplier
+            coordinates[i] = coordinate
