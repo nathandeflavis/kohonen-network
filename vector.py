@@ -17,19 +17,15 @@ class Vector:
     """
     def __str__(self):
         coordinates = self._coordinates
-        firstCoordinateIndex = 0
-        firstCoordinate = coordinates[firstCoordinateIndex]
-        s = "(" + str(firstCoordinate)
+        coordinateStrings = []
+
+        for coordinate in coordinates:
+            coordinateString = str(coordinate)
+            coordinateStrings.append(coordinateString)
         
-        start = 1
-        dimensionality = len(coordinates)
-
-        for i in range(1, dimensionality):
-            coordinate = coordinates[i]
-            s += ", " + str(coordinate)
-
-        s += ")"
-        return s       
+        delimiter = ", "
+        s = "(" + delimiter.join(coordinateStrings) + ")"
+        return s
 
     """
     A getter function for this vector's coordinates.
@@ -70,21 +66,20 @@ class Vector:
             coordinates[i] = coordinate
 
     """
-    A function to add the coordinates of a given other vector
+    A function to add the coordinates of that given vector
     to the coordinates of this vector.
-    
     """
     def add(self, vector):
-        myCoordinates = self._coordinates
-        theirCoordinates = vector._coordinates
+        thisCoordinates = self._coordinates
+        thatCoordinates = vector._coordinates
         start = 0
-        myDimensionality = len(myCoordinates)
+        thisDimensionality = len(thisCoordinates)
         
-        for i in range(start, myDimensionality):
-            myCoordinate = myCoordinates[i]
-            theirCoordinate = theirCoordinates[i]
-            myCoordinate += theirCoordinate
-            myCoordinates[i] = myCoordinate
+        for i in range(start, thisDimensionality):
+            thisCoordinate = thisCoordinates[i]
+            thatCoordinate = thatCoordinates[i]
+            thisCoordinate += thatCoordinate
+            thisCoordinates[i] = thisCoordinate
 
     """
     A function to multiply this vector's coordinates by a given multiplier.
