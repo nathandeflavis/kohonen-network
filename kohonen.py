@@ -115,7 +115,7 @@ def print_epoch_weight_change_sums(epochWeightChangeSums):
         print(output)
 
 """
-A function to get clustering of given data points into given Kohonen units.
+A function to cluster given data points into given Kohonen units.
 """
 def cluster(dataPoints, units):
     print("Data point clusters:")
