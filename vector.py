@@ -35,7 +35,7 @@ class Vector:
         return coordinates
 
     """
-    A function to get this vector's length
+    A function to compute this vector's length
     as the square root of the sum of its squared coordinates.
     """
     def get_length(self):
