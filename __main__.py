@@ -12,83 +12,90 @@ from copy import *
 A function that is the entry point into the program.
 """
 def main():
-    trainingSet = "Training"
-    testSet = "Test"
-    prompt = "Use <" + trainingSet + "> set or <" + testSet + "> set? "
-    setToUse = input(prompt)    
-    setFilePath = get_set_file_path(setToUse)
+    training_set = "Training"
+    test_set = "Test"
+    prompt = "Use <" + training_set + "> set or <" + test_set + "> set? "
+    set_to_use = input(prompt)    
+    set_file_path = get_set_file_path(set_to_use)
     
-    dataPointsToNormalise = get_data_points(setFilePath)
-    dataPointsNotToNormalise = deepcopy(dataPointsToNormalise)
+    data_points_to_normalise = get_data_points(set_file_path)
+    data_points_not_to_normalise = deepcopy(data_points_to_normalise)
 
-    firstDataPointToNormaliseIndex = 0
-    firstDataPointToNormalise = dataPointsToNormalise[
-        firstDataPointToNormaliseIndex]
-    units = get_units(firstDataPointToNormalise)
-    useTrainingSet = setToUse == trainingSet
+    first_data_point_to_normalise_index = 0
+    first_data_point_to_normalise = data_points_to_normalise[
+        first_data_point_to_normalise_index]
+    units = get_units(first_data_point_to_normalise)
+    use_training_set = set_to_use == training_set
 
-    if useTrainingSet:
-        train(dataPointsToNormalise, units)
+    if use_training_set:
+        train(data_points_to_normalise, units)
     
-    cluster(dataPointsNotToNormalise, units)
+    cluster(data_points_not_to_normalise, units)
 
 """
 A function to get a training/test set file's path for a set's given name.
 """
-def get_set_file_path(setToUse):
+def get_set_file_path(set_to_use):
     directory = "Sets"
-    fileExtension = "csv"
-    setFilePath = directory + "/" + setToUse + "." + fileExtension
-    return setFilePath
+    file_extension = "csv"
+    set_file_path = directory + "/" + set_to_use + "." + file_extension
+    return set_file_path
+
+def test_get_set_file_path():
+    set_to_use = "Training"
+    set_file_path = get_set_file_path(set_to_use)
+    directory = "Sets"
+    file_extension = "csv"
+    assert set_file_path == directory + "/" + set_to_use + "." + file_extension
 
 """
 A function to extract data points from a training/test set file
 with a given path.
 """
-def get_data_points(setFilePath):
-    dataPoints = []
+def get_data_points(set_file_path):
+    data_points = []
     
-    with open(setFilePath) as file:
+    with open(set_file_path) as file:
         reader = DictReader(file)
         
         for line in reader:
-            dataPoint = get_data_point(line)
-            dataPoints.append(dataPoint)
+            data_point = get_data_point(line)
+            data_points.append(data_point)
                 
     file.close()
-    return dataPoints
+    return data_points
 
 """
 A function to extract a data point
 from a given line of a training/test set file.
 """
-def get_data_point(setFileLine):
+def get_data_point(set_file_line):
     coordinates = []
-    values = setFileLine.values()
+    values = set_file_line.values()
     
     for value in values:
         coordinate = float(value)
         coordinates.append(coordinate)
 
-    dataPoint = Vector(coordinates)
-    return dataPoint
+    data_point = Vector(coordinates)
+    return data_point
 
 """
 A function to generate Kohonen units
 with the dimensionality of a given data point.
 """
-def get_units(dataPoint):
+def get_units(data_point):
     units = []
     prompt = "How many units? "
     start = 0
-    unitCount = int(input(prompt))
+    unit_count = int(input(prompt))
 
-    for i in range(start, unitCount):
-        unitNumber = i + 1
-        output = "Unit " + str(unitNumber) + ":"
+    for i in range(start, unit_count):
+        unit_number = i + 1
+        output = "Unit " + str(unit_number) + ":"
         print(output)
         
-        unit = get_unit(dataPoint)
+        unit = get_unit(data_point)
         units.append(unit)
 
     return units
@@ -97,19 +104,19 @@ def get_units(dataPoint):
 A function to generate a Kohonen unit
 with the dimensionality of a given data point. 
 """
-def get_unit(dataPoint):
+def get_unit(data_point):
     start = 0
-    dataPointCoordinates = dataPoint._coordinates
-    dataPointDimensionality = len(dataPointCoordinates)
-    unitCoordinates = []
+    data_point_coordinates = data_point._coordinates
+    data_point_dimensionality = len(data_point_coordinates)
+    unit_coordinates = []
 
-    for j in range(start, dataPointDimensionality):
-        unitCoordinateNumber = j + 1
-        prompt = "Coordinate " + str(unitCoordinateNumber) + ": "
-        unitCoordinate = float(input(prompt))
-        unitCoordinates.append(unitCoordinate)
+    for j in range(start, data_point_dimensionality):
+        unit_coordinate_number = j + 1
+        prompt = "Coordinate " + str(unit_coordinate_number) + ": "
+        unit_coordinate = float(input(prompt))
+        unit_coordinates.append(unit_coordinate)
 
-    unit = Vector(unitCoordinates)
+    unit = Vector(unit_coordinates)
     return unit
 
 main()
